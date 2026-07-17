@@ -1,0 +1,21 @@
+# Environment / secrets — NEVER commit the service_role key
+.env
+.env.local
+scripts/.env
+
+# Node
+node_modules/
+scripts/node_modules/
+npm-debug.log*
+package-lock.json
+scripts/package-lock.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temp
+*.tmp
+scratchpad/

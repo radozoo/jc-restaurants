@@ -19,3 +19,8 @@ Thumbs.db
 # Temp
 *.tmp
 scratchpad/
+
+# Suggestion review — pending/enriched exports may hold colleague data
+scripts/suggestions-pending.json
+scripts/suggestions-enriched.json
+scripts/edits-pending.json

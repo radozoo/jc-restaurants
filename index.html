@@ -80,46 +80,51 @@
   :focus-visible{ outline:2px solid var(--focus); outline-offset:2px; border-radius:2px; }
 
   /* ---------------- Header ---------------- */
+  /* One frozen (sticky) block: brand + compact title/subtitle + search/filters.
+     This used to be a full landing-page hero, which ate half the screen once
+     pinned — sizes/paddings below are deliberately tightened so the whole
+     frozen block stays slim while scrolling. */
   .deck{
     position:sticky; top:0; z-index:20;
     background:color-mix(in srgb, var(--bg) 88%, transparent);
     backdrop-filter:saturate(1.4) blur(10px);
     border-bottom:1px solid var(--rule);
   }
-  .deck-inner{ padding:22px clamp(16px,4vw,44px) 16px; }
+  .deck-inner{ padding:14px clamp(16px,4vw,44px) 12px; }
 
   .brandrow{ display:flex; align-items:center; justify-content:space-between; gap:16px; }
-  .brand{ display:flex; align-items:center; gap:11px; }
-  .mark{ width:26px; height:26px; display:block; flex:none; }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .mark{ width:22px; height:22px; display:block; flex:none; }
   .brand-name{
-    font-family:var(--font-display); font-weight:700; font-size:14px;
+    font-family:var(--font-display); font-weight:700; font-size:13px;
     letter-spacing:.01em; color:var(--ink);
   }
   .brand-sub{
-    font-family:var(--font-mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+    font-family:var(--font-mono); font-size:9px; letter-spacing:.14em; text-transform:uppercase;
     color:var(--ink-faint); margin-top:1px;
   }
   .deckbtns{ display:flex; align-items:center; gap:9px; }
   .themebtn{
     background:transparent; border:1px solid var(--rule); color:var(--ink-soft);
-    width:38px; height:38px; border-radius:10px; cursor:pointer; font-size:15px;
+    width:34px; height:34px; border-radius:9px; cursor:pointer; font-size:17px;
     display:flex; align-items:center; justify-content:center; transition:border-color .15s, color .15s;
   }
+  .themebtn span{ display:block; transform:translateY(2px); }
   .themebtn:hover{ border-color:var(--lime-deep); color:var(--ink); }
   .suggestbtn{
     background:var(--lime); border:1px solid var(--lime); color:var(--on-lime);
-    height:38px; padding:0 15px; border-radius:10px; cursor:pointer; font-weight:700; font-size:13px;
-    display:inline-flex; align-items:center; gap:7px; white-space:nowrap; transition:background .15s, transform .12s;
+    height:34px; padding:0 14px; border-radius:9px; cursor:pointer; font-weight:700; font-size:12.5px;
+    line-height:1; display:inline-flex; align-items:center; gap:7px; white-space:nowrap; transition:background .15s, transform .12s;
     font-family:var(--font-display);
   }
   .suggestbtn:hover{ background:var(--lime-deep); border-color:var(--lime-deep); }
   .suggestbtn:active{ transform:translateY(1px); }
-  .suggestbtn svg{ width:15px; height:15px; }
+  .suggestbtn svg{ width:14px; height:14px; }
   @media (max-width:560px){ .suggestbtn .lbl{ display:none; } .suggestbtn{ padding:0 12px; } }
 
   .title{
-    margin:20px 0 0; font-family:var(--font-display); font-weight:700;
-    font-size:clamp(30px,6vw,58px); line-height:1.02; letter-spacing:-.02em;
+    margin:10px 0 0; font-family:var(--font-display); font-weight:700;
+    font-size:clamp(19px,2.4vw,25px); line-height:1.1; letter-spacing:-.01em;
     color:var(--ink); text-wrap:balance; display:flex; flex-wrap:wrap;
   }
   .flap{ display:inline-block; min-width:.06em; }
@@ -129,29 +134,29 @@
   @keyframes settle{ 0%{ transform:translateY(-30%); opacity:0; } 60%{ transform:translateY(6%); opacity:1;} 100%{ transform:translateY(0);} }
   .title .accent{ color:var(--lime-deep); position:relative; }
   .underline{
-    height:5px; width:0; background:var(--lime); margin-top:10px; border-radius:3px;
-    max-width:210px;
+    height:3px; width:0; background:var(--lime); margin-top:6px; border-radius:3px;
+    max-width:110px;
   }
   .js-motion .underline{ animation:sweep .5s .55s ease-out forwards; }
-  @keyframes sweep{ from{ width:0; } to{ width:210px; } }
+  @keyframes sweep{ from{ width:0; } to{ width:110px; } }
 
   .subtitle{
-    margin:14px 0 0; font-size:14px; color:var(--ink-soft);
-    display:flex; align-items:center; flex-wrap:wrap; gap:9px;
+    margin:8px 0 0; font-size:12.5px; color:var(--ink-soft);
+    display:flex; align-items:center; flex-wrap:wrap; gap:8px;
   }
   .pin{ color:var(--lime-deep); display:inline-flex; }
-  .pin svg{ width:15px; height:15px; }
+  .pin svg{ width:13px; height:13px; }
   .subtitle b{ color:var(--ink); font-weight:600; }
   .dot-sep{ color:var(--ink-faint); }
 
   /* ---------------- Controls ---------------- */
-  .controls{ margin-top:20px; display:flex; flex-direction:column; gap:13px; }
+  .controls{ margin-top:12px; display:flex; flex-direction:column; gap:9px; }
   .searchrow{ display:flex; gap:11px; flex-wrap:wrap; align-items:center; }
   .search-wrap{ flex:1 1 260px; position:relative; display:flex; align-items:center; }
   .search-wrap svg{ position:absolute; left:14px; width:16px; height:16px; color:var(--ink-faint); pointer-events:none; }
   .search{
     width:100%; background:var(--surface); border:1px solid var(--rule); border-radius:11px;
-    color:var(--ink); font-family:var(--font-body); font-size:15px; padding:12px 14px 12px 40px;
+    color:var(--ink); font-family:var(--font-body); font-size:14px; padding:9px 14px 9px 40px;
     transition:border-color .15s, box-shadow .15s;
   }
   .search::placeholder{ color:var(--ink-faint); }
@@ -159,7 +164,7 @@
 
   .nameplate{
     display:flex; align-items:center; gap:9px; font-size:13px; color:var(--ink-soft);
-    background:var(--surface); border:1px solid var(--rule); border-radius:11px; padding:8px 8px 8px 14px;
+    background:var(--surface); border:1px solid var(--rule); border-radius:11px; padding:6px 8px 6px 14px;
     white-space:nowrap;
   }
   .nameplate b{ color:var(--ink); font-weight:600; }
@@ -182,7 +187,7 @@
   }
   .chip{
     background:var(--surface); border:1px solid var(--rule); color:var(--ink-soft);
-    padding:7px 13px; border-radius:999px; cursor:pointer; font-size:13px; font-weight:500;
+    padding:5px 12px; border-radius:999px; cursor:pointer; font-size:12.5px; font-weight:500;
     white-space:nowrap; transition:background .12s, color .12s, border-color .12s;
   }
   .chip:hover{ border-color:var(--lime-deep); color:var(--ink); }
@@ -192,6 +197,8 @@
   .filterline{ display:flex; gap:8px; align-items:flex-start; }
   .filterline > .chiplabel{ margin-top:8px; }
   .catchips{ flex:1; }
+  .chip.fav{ border-color:var(--coral); margin-left:24px; }
+  .chip.fav:hover{ border-color:var(--coral); }
   .chip.fav.active{ background:var(--coral); border-color:var(--coral); color:#fff; }
 
   .statrow{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
@@ -239,6 +246,7 @@
   @media (max-width:560px){ .sched-head{ display:none; } }
 
   .card{
+    position:relative;
     display:grid; grid-template-columns:44px 1fr auto; gap:14px; align-items:center;
     background:var(--surface); border:1px solid var(--rule); border-radius:14px;
     padding:14px 18px; margin-bottom:9px; box-shadow:var(--shadow);
@@ -291,6 +299,9 @@
   .walkcol .num svg{ width:11px; height:11px; color:var(--ink-faint); }
   .walkcol .lbl{ display:block; font-family:var(--font-mono); font-size:8px; letter-spacing:.08em; color:var(--ink-faint); }
   .meta{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:6px; }
+  .meta-links{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .meta-tags{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .meta-tags.has-divider{ margin-left:24px; }
   .menu-pill{
     display:inline-flex; align-items:center; gap:5px; text-decoration:none;
     font-size:11px; font-weight:700; font-family:var(--font-display);
@@ -308,6 +319,14 @@
   }
   .web-pill:hover{ border-color:var(--ink-faint); color:var(--ink); }
   .web-pill svg{ width:12px; height:12px; }
+  .tag-pill{
+    display:inline-flex; align-items:center; text-decoration:none; cursor:pointer;
+    font-size:11px; font-weight:600; font-family:var(--font-display);
+    color:var(--office-deep); background:color-mix(in srgb, var(--office) 12%, transparent);
+    border:1px solid color-mix(in srgb, var(--office) 40%, var(--rule));
+    padding:3px 9px; border-radius:999px; transition:background .13s, border-color .13s, color .13s;
+  }
+  .tag-pill:hover{ background:var(--office); color:#fff; border-color:var(--office); }
 
   .rating{ text-align:center; }
   .rating .num{
@@ -326,13 +345,31 @@
   }
   .maplink:hover{ border-color:var(--lime-deep); color:var(--on-lime); background:var(--lime); }
   .maplink svg{ width:15px; height:15px; }
+  /* edit pencil: top-right corner, revealed only on card hover or when selected */
+  .editbtn{
+    position:absolute; top:9px; right:10px; z-index:3;
+    display:flex; align-items:center; justify-content:center; color:var(--ink-faint);
+    background:var(--surface); border:1px solid var(--rule); border-radius:9px; width:27px; height:27px;
+    cursor:pointer; opacity:0; pointer-events:none;
+    transition:opacity .14s, border-color .14s, color .14s, background .14s;
+  }
+  .card:hover .editbtn, .card.selected .editbtn{ opacity:1; pointer-events:auto; }
+  .editbtn:hover{ border-color:var(--office-deep); color:var(--office-deep); }
+  .editbtn:focus-visible{ opacity:1; pointer-events:auto; outline:2px solid var(--office-deep); outline-offset:1px; }
+  .editbtn svg{ width:14px; height:14px; }
 
   .empty{ display:none; padding:56px 24px; text-align:center; color:var(--ink-soft); }
   .empty.show{ display:block; }
   .empty .big{ font-family:var(--font-display); font-weight:700; font-size:19px; color:var(--ink); margin-bottom:6px; }
 
   /* ---------------- Map ---------------- */
-  .mappanel{ position:sticky; top:210px; max-height:calc(100vh - 230px); overflow:auto; }
+  /* Frozen alongside the list: sticks right under the header. --headerH is kept
+     in sync with the header's real (responsive) height via ResizeObserver in JS,
+     so this never drifts out of place if the header wraps to more/fewer lines. */
+  .mappanel{
+    position:sticky; top:var(--headerH, 316px);
+    max-height:calc(100vh - var(--headerH, 316px) - 20px); overflow:auto;
+  }
   .mapcard{ background:var(--surface); border:1px solid var(--rule); border-radius:16px; padding:16px; box-shadow:var(--shadow); }
   .mapheader{
     display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px;
@@ -356,7 +393,8 @@
   .lg-rest{ width:9px; height:9px; border-radius:50%; background:var(--lime-deep); }
 
   /* ---------------- Modal ---------------- */
-  .overlay{ position:fixed; inset:0; background:rgba(20,31,43,.55); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; z-index:50; padding:20px; }
+  /* z-index above Leaflet's panes/controls (they climb to ~1000), else the sticky map bleeds over the modal */
+  .overlay{ position:fixed; inset:0; background:rgba(20,31,43,.55); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; z-index:2000; padding:20px; }
   .overlay.show{ display:flex; }
   .modal{ background:var(--surface); border:1px solid var(--rule); border-radius:18px; padding:26px; width:100%; max-width:360px; box-shadow:0 20px 60px rgba(20,31,43,.3); }
   .modal .mmark{ width:30px; height:30px; margin-bottom:14px; }
@@ -389,6 +427,18 @@
   .field .err{ color:var(--coral); font-size:11px; margin-top:4px; display:none; }
   .field.invalid .err{ display:block; }
   .field.invalid input{ border-color:var(--coral); }
+  .field .dupe{ color:var(--office-deep); font-size:11px; margin-top:4px; display:none; }
+  .field.warn .dupe{ display:block; }
+  /* tag picker (suggestion form) — toggleable pills */
+  .tagpick{ display:flex; flex-wrap:wrap; gap:7px; }
+  .tagpick .tp{
+    font-family:var(--font-display); font-size:11.5px; font-weight:600; cursor:pointer;
+    color:var(--office-deep); background:color-mix(in srgb, var(--office) 12%, transparent);
+    border:1px solid color-mix(in srgb, var(--office) 40%, var(--rule));
+    padding:5px 11px; border-radius:999px; transition:background .13s, border-color .13s, color .13s;
+  }
+  .tagpick .tp:hover{ border-color:var(--office); }
+  .tagpick .tp.on{ background:var(--office); border-color:var(--office); color:#fff; }
   .modal .hint{ font-size:11.5px; color:var(--ink-faint); font-family:var(--font-mono); margin:2px 0 16px; line-height:1.6; }
   .success{ text-align:center; padding:8px 0 4px; }
   .success .check{ width:52px; height:52px; margin:0 auto 14px; border-radius:50%; background:var(--lime); display:flex; align-items:center; justify-content:center; }
@@ -428,17 +478,14 @@
             <rect x="2" y="17" width="13" height="13" rx="2.5" fill="#a3fb66"/>
             <rect x="17" y="17" width="13" height="13" rx="2.5" fill="#233347"/>
           </svg>
-          <div>
-            <div class="brand-name">Joyful Craftsmen</div>
-            <div class="brand-sub">Interní obědový průvodce</div>
-          </div>
+          <span class="brand-name">Joyful Craftsmen</span>
         </div>
         <div class="deckbtns">
           <button class="suggestbtn" id="openSuggest" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
             <span class="lbl">Navrhnout podnik</span>
           </button>
-          <button class="themebtn" id="themeBtn" type="button" aria-label="Přepnout světlý/tmavý režim" title="Světlý / tmavý režim">◐</button>
+          <button class="themebtn" id="themeBtn" type="button" aria-label="Přepnout světlý/tmavý režim" title="Světlý / tmavý režim"><span>◐</span></button>
         </div>
       </div>
 
@@ -467,6 +514,11 @@
         <div class="filterline">
           <span class="chiplabel">Kuchyně</span>
           <div class="chiprow catchips" id="catChips" aria-label="Filtr podle kuchyně"></div>
+        </div>
+
+        <div class="filterline" id="tagFilterline" style="display:none;">
+          <span class="chiplabel">Tagy</span>
+          <div class="chiprow" id="tagChips" aria-label="Filtr podle tagů"></div>
         </div>
 
         <div class="chiprow">
@@ -555,30 +607,21 @@
     <div class="modal wide" id="suggestModal">
       <div id="suggestForm">
         <h3>Navrhnout podnik</h3>
-        <p class="hint">Návrh pošleme ke schválení — jakmile ho odsouhlasíme, objeví se všem v seznamu.</p>
+        <p class="hint">Stačí název a odkaz na Google Maps — zbytek doplníme při schválení. Ale čím víc vyplníš, tím líp.</p>
         <div class="field" id="f-name">
           <label>Název podniku <span class="req">*</span></label>
           <input id="s-name" type="text" maxlength="80" placeholder="Např. Lokál Dlouhááá">
           <div class="err">Vyplň prosím název.</div>
+          <div class="dupe" id="s-dupe">Tenhle podnik už v seznamu nejspíš máme.</div>
         </div>
         <div class="field" id="f-link">
           <label>Odkaz na Google Maps <span class="req">*</span></label>
           <input id="s-link" type="url" placeholder="https://maps.app.goo.gl/…">
-          <div class="err">Vlož odkaz na Google Maps.</div>
+          <div class="err">Vlož odkaz na Google Maps (např. https://maps.app.goo.gl/…).</div>
         </div>
-        <div class="field-row">
-          <div class="field">
-            <label>Typ kuchyně <span class="opt">(vyber nebo napiš nový)</span></label>
-            <input id="s-cuisine" type="text" maxlength="60" list="cuisineOptions" placeholder="Vyber ze seznamu nebo napiš…" autocomplete="off">
-            <datalist id="cuisineOptions"></datalist>
-          </div>
-          <div class="field">
-            <label>Cena <span class="opt">(nepovinné)</span></label>
-            <select id="s-price">
-              <option value="">—</option><option value="€">€ levné</option><option value="€€">€€ střední</option>
-              <option value="€€€">€€€ vyšší</option><option value="€€€€">€€€€ prémiové</option>
-            </select>
-          </div>
+        <div class="field">
+          <label>Tagy <span class="opt">(nepovinné, vyber co sedí)</span></label>
+          <div class="tagpick" id="s-tags" role="group" aria-label="Tagy podniku"></div>
         </div>
         <div class="field-row">
           <div class="field">
@@ -591,8 +634,8 @@
           </div>
         </div>
         <div class="field">
-          <label>Proč ho doporučuješ? <span class="opt">(nepovinné)</span></label>
-          <textarea id="s-note" maxlength="280" placeholder="Krátce, ať kolegové vědí, do čeho jdou…"></textarea>
+          <label>Popis <span class="opt">(nepovinné, proč tam zajít)</span></label>
+          <textarea id="s-desc" maxlength="280" placeholder="Krátce, ať kolegové vědí, do čeho jdou…"></textarea>
         </div>
         <div class="modal-actions">
           <button type="button" id="cancelSuggest">Zrušit</button>
@@ -606,6 +649,90 @@
         <div class="modal-actions" style="justify-content:center;">
           <button type="button" class="primary" id="closeSuccess">Hotovo</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Suggest an edit to an existing restaurant -->
+  <div class="overlay" id="editOverlay">
+    <div class="modal wide" id="editModal">
+      <div id="editForm">
+        <h3>Navrhnout úpravu</h3>
+        <p class="hint">Uprav libovolné pole u <b id="editPlace">podniku</b>. Pošleme ke schválení — měníme jen to, co změníš.</p>
+        <div class="field" id="fe-name">
+          <label>Název podniku <span class="req">*</span></label>
+          <input id="e-name" type="text" maxlength="80">
+          <div class="err">Název nesmí být prázdný.</div>
+        </div>
+        <div class="field" id="fe-link">
+          <label>Odkaz na Google Maps</label>
+          <input id="e-link" type="url" placeholder="https://maps.app.goo.gl/…">
+          <div class="err">Vlož platný odkaz na Google Maps (např. https://maps.app.goo.gl/…).</div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Typ kuchyně</label>
+            <input id="e-cuisine" type="text" maxlength="60" autocomplete="off">
+          </div>
+          <div class="field">
+            <label>Cena</label>
+            <select id="e-price">
+              <option value="">—</option><option value="€">€ levné</option><option value="€€">€€ střední</option>
+              <option value="€€€">€€€ vyšší</option><option value="€€€€">€€€€ prémiové</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Tagy</label>
+          <div class="tagpick" id="e-tags" role="group" aria-label="Tagy podniku"></div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Web restaurace</label>
+            <input id="e-web" type="url" placeholder="https://…">
+          </div>
+          <div class="field">
+            <label>Denní menu</label>
+            <input id="e-menu" type="url" placeholder="https://…">
+          </div>
+        </div>
+        <div class="field">
+          <label>Popis</label>
+          <textarea id="e-desc" maxlength="400"></textarea>
+        </div>
+        <div class="field">
+          <label>Poznámka ke schválení <span class="opt">(nepovinné, co/proč měníš)</span></label>
+          <textarea id="e-note" maxlength="280" placeholder="Např. „změnili otevírací dobu", „zdražili menu"…"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="cancelEdit">Zrušit</button>
+          <button type="button" class="primary" id="sendEdit">Odeslat úpravu</button>
+        </div>
+      </div>
+      <div class="success" id="editSuccess" style="display:none;">
+        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h3>Díky!</h3>
+        <p>Návrh úpravy <b id="editThanksPlace"></b> putuje ke schválení.</p>
+        <div class="modal-actions" style="justify-content:center;">
+          <button type="button" class="primary" id="closeEditSuccess">Hotovo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team-code gate (unlock suggesting / editing) -->
+  <div class="overlay" id="unlockOverlay">
+    <div class="modal" id="unlockModal">
+      <h3>Týmové heslo</h3>
+      <p class="hint">Navrhovat a upravovat podniky můžou jen kolegové. Zadej týmové heslo — zapamatujeme si ho v tomhle prohlížeči.</p>
+      <div class="field" id="fu-code">
+        <label>Heslo <span class="req">*</span></label>
+        <input id="u-code" type="password" autocomplete="off" placeholder="Týmové heslo">
+        <div class="err">Špatné heslo, zkus to znovu.</div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="cancelUnlock">Zrušit</button>
+        <button type="button" class="primary" id="sendUnlock">Odemknout</button>
       </div>
     </div>
   </div>
@@ -624,25 +751,43 @@
   //  Row Level Security is what protects the data, not hiding the key.
   // ======================================================================
   var CONFIG = {
-    SUPABASE_URL: 'https://YOUR-PROJECT-REF.supabase.co',
-    SUPABASE_ANON_KEY: 'YOUR-PUBLIC-ANON-KEY',
+    SUPABASE_URL: 'https://yxanvcrjenmnrrtytbop.supabase.co',
+    SUPABASE_ANON_KEY: 'sb_publishable_BerkBlxLuISgdR1WdAwdwQ_J7v1nkAN',
     // Office: Olivova 2096/4, 110 00 Nové Město (adjust if the pin is slightly off)
-    OFFICE: { lat: 50.08360, lng: 14.42970, label: 'Olivova 4, Nové Město' }
+    OFFICE: { lat: 50.0829192, lng: 14.4303714, label: 'Olivova 4, Nové Město' }
   };
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!reduceMotion){ document.getElementById('app').classList.add('js-motion'); }
 
+  // Keep --headerH in sync with the sticky header's real height, so the frozen
+  // map panel (.mappanel, top:var(--headerH)) always sits flush under it even if
+  // the header wraps to more/fewer lines (narrow viewport, long category list).
+  (function(){
+    var deckEl = document.querySelector('.deck');
+    if(!deckEl) return;
+    function syncHeaderH(){ document.documentElement.style.setProperty('--headerH', deckEl.offsetHeight+'px'); }
+    syncHeaderH();
+    if(window.ResizeObserver){ new ResizeObserver(syncHeaderH).observe(deckEl); }
+    else { window.addEventListener('resize', syncHeaderH); }
+  })();
+
   // ---------- helpers ----------
   function nameKey(s){ return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase(); }
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  // Straight-line distance underestimates real walking time in Nové Město's
+  // irregular medieval street grid (blocks/squares can't be cut through), so we
+  // scale it by a detour ("circuity") factor before converting to minutes.
+  // Tuned against a few real Google Maps walking times; adjust DETOUR_FACTOR if
+  // estimates still feel off for a given area.
+  var DETOUR_FACTOR = 1.6;
   function haversineMin(a, b){
     if(a.lat==null||a.lng==null||b.lat==null||b.lng==null) return null;
     var R=6371000, toRad=function(d){return d*Math.PI/180;};
     var dLat=toRad(b.lat-a.lat), dLng=toRad(b.lng-a.lng);
     var s=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLng/2)*Math.sin(dLng/2);
     var m=R*2*Math.atan2(Math.sqrt(s),Math.sqrt(1-s));
-    return Math.max(1, Math.round(m/80)); // ~80 m/min walking
+    return Math.max(1, Math.round((m*DETOUR_FACTOR)/80)); // ~80 m/min walking
   }
   var PRICE_ORD = {'€':1,'€€':2,'€€€':3,'€€€€':4};
 
@@ -694,6 +839,7 @@
   var myFavs = {};            // restaurant_id -> true (for current name)
   var favRows = [];           // raw {restaurant_id, name_key}
   var CATS = [];              // [{name, count}] by category
+  var TAGS = [];              // [{name, count}] by curated tag
 
   function recomputeFavs(){
     counts={}; myFavs={};
@@ -706,6 +852,10 @@
   function buildCats(){
     var c={}; DATA.forEach(function(r){ var k=r.category||'Ostatní'; c[k]=(c[k]||0)+1; });
     CATS=Object.keys(c).sort(function(a,b){ return c[b]-c[a]||a.localeCompare(b,'cs'); }).map(function(k){ return {name:k,count:c[k]}; });
+  }
+  function buildTags(){
+    var t={}; DATA.forEach(function(r){ (r.tags||[]).forEach(function(name){ t[name]=(t[name]||0)+1; }); });
+    TAGS=Object.keys(t).sort(function(a,b){ return t[b]-t[a]||a.localeCompare(b,'cs'); }).map(function(k){ return {name:k,count:t[k]}; });
   }
 
   async function loadData(){
@@ -726,12 +876,13 @@
           id:r.id, key:r.id, name:r.name, rating:(r.rating!=null?Number(r.rating):null),
           price:r.price_tier||'', cuisine:r.cuisine_type||'', category:r.category||'Ostatní',
           link:r.maps_url||null, web:r.website_url||null, menu:r.daily_menu_url||null,
-          desc:r.description||'', lat:(r.lat!=null?Number(r.lat):null), lng:(r.lng!=null?Number(r.lng):null)
+          desc:r.description||'', lat:(r.lat!=null?Number(r.lat):null), lng:(r.lng!=null?Number(r.lng):null),
+          tags:Array.isArray(r.tags)?r.tags:[]
         };
       });
       DATA.sort(function(a,b){ return (b.rating||0)-(a.rating||0); });
       DATA.forEach(function(r,i){ r.origIdx=i; r.walkMin=haversineMin(CONFIG.OFFICE, r); });
-      recomputeFavs(); buildCats();
+      recomputeFavs(); buildCats(); buildTags();
       document.getElementById('totalCount').textContent=DATA.length;
       buildCards(); initMap(); refresh();
     }catch(e){
@@ -743,24 +894,70 @@
   // ======================================================================
   //  Filter / sort state
   // ======================================================================
-  var state={ search:'', cats:new Set(), catsExpanded:false, prices:new Set(), minRating:0, maxWalk:0, onlyFav:false, sortKey:'rating', sortDir:'desc' };
+  var state={ search:'', cats:new Set(), catsExpanded:false, tags:new Set(), prices:new Set(), minRating:0, maxWalk:0, onlyFav:false, sortKey:'rating', sortDir:'desc' };
   var SORT_LABELS={ rating:'hodnocení', walk:'vzdálenosti', price:'ceny', hearts:'srdíček', name:'názvu' };
   var WALK_TIERS=[{label:'Vše',max:0},{label:'≤5 min',max:5},{label:'≤10 min',max:10},{label:'≤15 min',max:15}];
   var PRICES=['€','€€','€€€','€€€€'];
   var RATING_TIERS=[{label:'Vše',min:0},{label:'4.0+',min:4.0},{label:'4.5+',min:4.5}];
 
   // ---------- chips ----------
-  var catChipsEl=document.getElementById('catChips'), CAT_CAP=8;
+  var catChipsEl=document.getElementById('catChips');
   function mkChip(label,active,onClick){ var b=document.createElement('button'); b.type='button'; b.className='chip'+(active?' active':''); b.textContent=label; b.addEventListener('click',onClick); return b; }
+  function mkCatChip(c){
+    return mkChip(c.name+' ('+c.count+')', state.cats.has(c.name), function(){
+      if(state.cats.has(c.name)) state.cats.delete(c.name); else state.cats.add(c.name); refresh();
+    });
+  }
+  // Fills the actual available row width instead of a hardcoded chip count —
+  // wide screens show more categories before collapsing into "+N dalších",
+  // narrow ones show fewer, all measured from the real rendered layout.
   function renderCatChips(){
     catChipsEl.innerHTML='';
-    catChipsEl.appendChild(mkChip('Vše', state.cats.size===0, function(){ state.cats.clear(); refresh(); }));
-    var list=CATS.slice(), shown, hidden=0;
-    if(state.catsExpanded || list.length<=CAT_CAP){ shown=list; }
-    else { shown=list.slice(0,CAT_CAP); var extra=list.slice(CAT_CAP).filter(function(c){ return state.cats.has(c.name); }); shown=shown.concat(extra); hidden=list.length-shown.length; }
-    shown.forEach(function(c){ catChipsEl.appendChild(mkChip(c.name+' ('+c.count+')', state.cats.has(c.name), function(){ if(state.cats.has(c.name)) state.cats.delete(c.name); else state.cats.add(c.name); refresh(); })); });
-    if(hidden>0){ var m=mkChip('+ '+hidden+' dalších ▾', false, function(){ state.catsExpanded=true; refresh(); }); m.className='chip chip-more'; catChipsEl.appendChild(m); }
-    else if(state.catsExpanded && list.length>CAT_CAP){ var l=mkChip('▴ méně', false, function(){ state.catsExpanded=false; refresh(); }); l.className='chip chip-more'; catChipsEl.appendChild(l); }
+    var allBtn=mkChip('Vše', state.cats.size===0, function(){ state.cats.clear(); refresh(); });
+    catChipsEl.appendChild(allBtn);
+
+    var list=CATS.slice();
+    var selected=list.filter(function(c){ return state.cats.has(c.name); });
+    var unselected=list.filter(function(c){ return !state.cats.has(c.name); });
+    var ordered=selected.concat(unselected);
+    if(ordered.length===0) return;
+
+    if(state.catsExpanded){
+      ordered.forEach(function(c){ catChipsEl.appendChild(mkCatChip(c)); });
+      var less=mkChip('▴ méně', false, function(){ state.catsExpanded=false; refresh(); });
+      less.className='chip chip-more'; catChipsEl.appendChild(less);
+      return;
+    }
+
+    var els=ordered.map(function(c){ var el=mkCatChip(c); catChipsEl.appendChild(el); return el; });
+    var rowTop=allBtn.offsetTop;
+    var fitCount=els.length;
+    for(var i=0;i<els.length;i++){ if(els[i].offsetTop>rowTop){ fitCount=i; break; } }
+    if(fitCount>=els.length) return; // everything already fits on row 1, no need to collapse
+
+    var hiddenCount=els.length-fitCount;
+    while(fitCount>0){
+      for(var j=els.length-1;j>=fitCount;j--){ els[j].remove(); els.pop(); }
+      var more=mkChip('+ '+hiddenCount+' dalších ▾', false, function(){ state.catsExpanded=true; refresh(); });
+      more.className='chip chip-more'; catChipsEl.appendChild(more);
+      if(more.offsetTop===rowTop) break;
+      more.remove(); fitCount--; hiddenCount++;
+    }
+  }
+  var catResizeTimer=null;
+  window.addEventListener('resize', function(){
+    clearTimeout(catResizeTimer);
+    catResizeTimer=setTimeout(function(){ if(!state.catsExpanded) renderCatChips(); }, 150);
+  });
+  var tagChipsEl=document.getElementById('tagChips'), tagFilterlineEl=document.getElementById('tagFilterline');
+  function renderTagChips(){
+    tagChipsEl.innerHTML='';
+    tagFilterlineEl.style.display = TAGS.length ? '' : 'none';
+    TAGS.forEach(function(t){
+      tagChipsEl.appendChild(mkChip(t.name+' ('+t.count+')', state.tags.has(t.name), function(){
+        if(state.tags.has(t.name)) state.tags.delete(t.name); else state.tags.add(t.name); refresh();
+      }));
+    });
   }
   var priceChipsEl=document.getElementById('priceChips');
   function renderPriceChips(){ priceChipsEl.innerHTML=''; PRICES.forEach(function(p){ priceChipsEl.appendChild(mkChip(p, state.prices.has(p), function(){ if(state.prices.has(p)) state.prices.delete(p); else state.prices.add(p); refresh(); })); }); }
@@ -770,7 +967,7 @@
   function renderWalkChips(){ walkChipsEl.innerHTML=''; WALK_TIERS.forEach(function(t){ walkChipsEl.appendChild(mkChip(t.label, state.maxWalk===t.max, function(){ state.maxWalk=t.max; refresh(); })); }); }
 
   document.getElementById('favChip').addEventListener('click',function(){ state.onlyFav=!state.onlyFav; refresh(); });
-  document.getElementById('resetChip').addEventListener('click',function(){ state={ search:'', cats:new Set(), catsExpanded:false, prices:new Set(), minRating:0, maxWalk:0, onlyFav:false, sortKey:state.sortKey, sortDir:state.sortDir }; document.getElementById('search').value=''; refresh(); });
+  document.getElementById('resetChip').addEventListener('click',function(){ state={ search:'', cats:new Set(), catsExpanded:false, tags:new Set(), prices:new Set(), minRating:0, maxWalk:0, onlyFav:false, sortKey:state.sortKey, sortDir:state.sortDir }; document.getElementById('search').value=''; refresh(); });
   document.getElementById('search').addEventListener('input',function(){ state.search=this.value.trim().toLowerCase(); refresh(); });
 
   // ---------- sort ----------
@@ -819,40 +1016,196 @@
   function doSaveName(){ var v=nameInput.value.trim(); if(!v) return; setNameLS(v.slice(0,40)); refreshNamePlate(); recomputeFavs(); var id=pendingId; closeNameModal(); DATA.forEach(function(r){ updateHeart(r.id,false); }); if(id) performToggle(id,true); }
 
   // ======================================================================
+  //  Team-code gate (unlock suggesting / editing)
+  // ======================================================================
+  var LS_CODE='ors_code';
+  function getCode(){ try{ return localStorage.getItem(LS_CODE)||''; }catch(e){ return ''; } }
+  function setCodeLS(c){ try{ localStorage.setItem(LS_CODE,c); }catch(e){} }
+  function clearCode(){ try{ localStorage.removeItem(LS_CODE); }catch(e){} }
+  // A submit RPC rejected because the stored code no longer matches (raised with SQLSTATE 28000).
+  function isBadCode(e){ var m=((e&&e.message)||'')+' '+((e&&e.code)||''); return /invalid submit code|28000/i.test(m); }
+  var unlockOverlay=document.getElementById('unlockOverlay'), pendingUnlockAction=null;
+  // Run `action` only once the visitor has a valid team code. If we already have
+  // one stored, run immediately (optimistic — the RPC re-checks it on submit);
+  // otherwise prompt for it and run after a successful unlock.
+  function requireCode(action){
+    if(getCode()){ action(); return; }
+    pendingUnlockAction=action;
+    document.getElementById('u-code').value='';
+    document.getElementById('fu-code').classList.remove('invalid');
+    unlockOverlay.classList.add('show');
+    setTimeout(function(){ document.getElementById('u-code').focus(); },30);
+  }
+  function closeUnlock(){ unlockOverlay.classList.remove('show'); pendingUnlockAction=null; }
+  // Called when a submit RPC reports a bad code (e.g. the code was changed): forget
+  // the stored code and re-prompt, then retry the original action.
+  function relock(action){ clearCode(); pendingUnlockAction=action||null; document.getElementById('u-code').value=''; document.getElementById('fu-code').classList.add('invalid'); unlockOverlay.classList.add('show'); setTimeout(function(){ document.getElementById('u-code').focus(); },30); }
+  document.getElementById('cancelUnlock').addEventListener('click',closeUnlock);
+  unlockOverlay.addEventListener('click',function(e){ if(e.target===unlockOverlay) closeUnlock(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&unlockOverlay.classList.contains('show')) closeUnlock(); });
+  document.getElementById('u-code').addEventListener('keydown',function(e){ if(e.key==='Enter') document.getElementById('sendUnlock').click(); });
+  document.getElementById('sendUnlock').addEventListener('click', async function(){
+    var code=document.getElementById('u-code').value.trim();
+    if(!code){ document.getElementById('fu-code').classList.add('invalid'); return; }
+    var btn=this; btn.disabled=true;
+    try{
+      if(!sb) throw new Error('Databáze není nastavená.');
+      var res=await sb.rpc('check_submit_code',{ code:code });
+      if(res.error) throw res.error;
+      if(res.data===true){
+        setCodeLS(code); var act=pendingUnlockAction; unlockOverlay.classList.remove('show'); pendingUnlockAction=null; if(act) act();
+      } else {
+        document.getElementById('fu-code').classList.add('invalid');
+        document.getElementById('u-code').focus(); document.getElementById('u-code').select();
+      }
+    }catch(e){ alert('Ověření hesla selhalo: '+(e.message||e)); }
+    finally{ btn.disabled=false; }
+  });
+
+  // ======================================================================
   //  Suggest a restaurant
   // ======================================================================
   var suggestOverlay=document.getElementById('suggestOverlay'), suggestForm=document.getElementById('suggestForm'), suggestSuccess=document.getElementById('suggestSuccess');
-  function fillCuisineOptions(){ var dl=document.getElementById('cuisineOptions'); dl.innerHTML=''; CATS.forEach(function(c){ var o=document.createElement('option'); o.value=c.name; dl.appendChild(o); }); }
-  function openSuggest(){ suggestForm.style.display=''; suggestSuccess.style.display='none'; ['s-name','s-link','s-cuisine','s-web','s-menu','s-note'].forEach(function(id){ document.getElementById(id).value=''; }); document.getElementById('s-price').value=''; document.getElementById('f-name').classList.remove('invalid'); document.getElementById('f-link').classList.remove('invalid'); fillCuisineOptions(); suggestOverlay.classList.add('show'); setTimeout(function(){ document.getElementById('s-name').focus(); },30); }
+  // The fixed six — kept in sync with the app's tag system. Offered here even if no
+  // restaurant currently carries a given tag, so the vocabulary stays stable.
+  var SUGGEST_TAGS=['Quick lunch','Self-service','Budget option','Vegetarian/Vegan options','Business lunch','Gourmet experience','Good wine selection'];
+  var suggestTags=new Set();
+  // Accept only real Google Maps links: maps.app.goo.gl, goo.gl/maps, google.<tld>/maps,
+  // maps.google.<tld>. Deeper validity (does the pin exist?) is checked at approval time.
+  var GMAPS_RE=/^https?:\/\/(maps\.app\.goo\.gl\/|goo\.gl\/maps\/|(www\.)?maps\.google\.[a-z.]+\/|(www\.)?google\.[a-z.]+\/maps)/i;
+  function normName(s){ return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim(); }
+  function renderTagPick(){
+    var box=document.getElementById('s-tags'); box.innerHTML='';
+    SUGGEST_TAGS.forEach(function(t){
+      var b=document.createElement('button'); b.type='button'; b.className='tp'+(suggestTags.has(t)?' on':'');
+      b.textContent=t; b.setAttribute('aria-pressed',suggestTags.has(t)?'true':'false');
+      b.addEventListener('click',function(){
+        if(suggestTags.has(t)) suggestTags.delete(t); else suggestTags.add(t);
+        b.classList.toggle('on'); b.setAttribute('aria-pressed',suggestTags.has(t)?'true':'false');
+      });
+      box.appendChild(b);
+    });
+  }
+  function checkDupe(){
+    var v=normName(document.getElementById('s-name').value);
+    var hit=v.length>=3 && DATA.some(function(r){ return normName(r.name)===v; });
+    document.getElementById('f-name').classList.toggle('warn',hit);
+  }
+  function openSuggest(){
+    suggestForm.style.display=''; suggestSuccess.style.display='none';
+    ['s-name','s-link','s-web','s-menu','s-desc'].forEach(function(id){ document.getElementById(id).value=''; });
+    suggestTags=new Set(); renderTagPick();
+    document.getElementById('f-name').classList.remove('invalid','warn');
+    document.getElementById('f-link').classList.remove('invalid');
+    suggestOverlay.classList.add('show');
+    setTimeout(function(){ document.getElementById('s-name').focus(); },30);
+  }
   function closeSuggest(){ suggestOverlay.classList.remove('show'); }
-  document.getElementById('openSuggest').addEventListener('click',openSuggest);
+  document.getElementById('openSuggest').addEventListener('click',function(){ requireCode(openSuggest); });
   document.getElementById('cancelSuggest').addEventListener('click',closeSuggest);
   document.getElementById('closeSuccess').addEventListener('click',closeSuggest);
+  document.getElementById('s-name').addEventListener('input',checkDupe);
   suggestOverlay.addEventListener('click',function(e){ if(e.target===suggestOverlay) closeSuggest(); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&suggestOverlay.classList.contains('show')) closeSuggest(); });
   document.getElementById('sendSuggest').addEventListener('click', async function(){
     var name=document.getElementById('s-name').value.trim();
     var link=document.getElementById('s-link').value.trim();
-    var okName=!!name, okLink=/^https?:\/\/.+/i.test(link);
+    var okName=!!name, okLink=GMAPS_RE.test(link);
     document.getElementById('f-name').classList.toggle('invalid',!okName);
     document.getElementById('f-link').classList.toggle('invalid',!okLink);
     if(!okName||!okLink) return;
     var btn=this; btn.disabled=true;
     var payload={ name:name, maps_url:link,
-      cuisine_type:document.getElementById('s-cuisine').value.trim()||null,
-      price_tier:document.getElementById('s-price').value||null,
       website_url:document.getElementById('s-web').value.trim()||null,
       daily_menu_url:document.getElementById('s-menu').value.trim()||null,
-      note:document.getElementById('s-note').value.trim()||null,
+      tags:suggestTags.size?Array.from(suggestTags):null,
+      description:document.getElementById('s-desc').value.trim()||null,
       suggested_by:getName()||null };
     try{
       if(!sb) throw new Error('Databáze není nastavená.');
-      var res=await sb.from('suggestions').insert(payload);
+      var res=await sb.rpc('submit_suggestion',{ code:getCode(), payload:payload });
       if(res.error) throw res.error;
       document.getElementById('suggestThanksName').textContent=getName()||'kolego';
       document.getElementById('suggestThanksPlace').textContent='„'+name+'"';
       suggestForm.style.display='none'; suggestSuccess.style.display='';
-    }catch(e){ alert('Návrh se nepodařilo odeslat: '+(e.message||e)); }
+    }catch(e){
+      if(isBadCode(e)){ closeSuggest(); relock(function(){ openSuggest(); }); }
+      else alert('Návrh se nepodařilo odeslat: '+(e.message||e));
+    }
+    finally{ btn.disabled=false; }
+  });
+
+  // ======================================================================
+  //  Suggest an edit to an existing restaurant
+  // ======================================================================
+  var editOverlay=document.getElementById('editOverlay'), editForm=document.getElementById('editForm'), editSuccess=document.getElementById('editSuccess');
+  var editState={ id:null, tags:new Set() };
+  function renderEditTagPick(){
+    var box=document.getElementById('e-tags'); box.innerHTML='';
+    SUGGEST_TAGS.forEach(function(t){
+      var b=document.createElement('button'); b.type='button'; b.className='tp'+(editState.tags.has(t)?' on':'');
+      b.textContent=t; b.setAttribute('aria-pressed',editState.tags.has(t)?'true':'false');
+      b.addEventListener('click',function(){
+        if(editState.tags.has(t)) editState.tags.delete(t); else editState.tags.add(t);
+        b.classList.toggle('on'); b.setAttribute('aria-pressed',editState.tags.has(t)?'true':'false');
+      });
+      box.appendChild(b);
+    });
+  }
+  function openEdit(id){
+    var r=DATA.find(function(d){ return d.id===id; }); if(!r) return;
+    editState.id=id; editState.tags=new Set(r.tags||[]);
+    document.getElementById('editPlace').textContent=r.name;
+    document.getElementById('e-name').value=r.name||'';
+    document.getElementById('e-link').value=r.link||'';
+    document.getElementById('e-cuisine').value=r.cuisine||'';
+    document.getElementById('e-price').value=r.price||'';
+    document.getElementById('e-web').value=r.web||'';
+    document.getElementById('e-menu').value=r.menu||'';
+    document.getElementById('e-desc').value=r.desc||'';
+    document.getElementById('e-note').value='';
+    document.getElementById('fe-name').classList.remove('invalid');
+    document.getElementById('fe-link').classList.remove('invalid');
+    renderEditTagPick();
+    editForm.style.display=''; editSuccess.style.display='none';
+    editOverlay.classList.add('show');
+    setTimeout(function(){ document.getElementById('e-name').focus(); },30);
+  }
+  function closeEdit(){ editOverlay.classList.remove('show'); }
+  document.getElementById('cancelEdit').addEventListener('click',closeEdit);
+  document.getElementById('closeEditSuccess').addEventListener('click',closeEdit);
+  editOverlay.addEventListener('click',function(e){ if(e.target===editOverlay) closeEdit(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&editOverlay.classList.contains('show')) closeEdit(); });
+  document.getElementById('sendEdit').addEventListener('click', async function(){
+    var r=DATA.find(function(d){ return d.id===editState.id; }); if(!r) return;
+    var name=document.getElementById('e-name').value.trim();
+    var link=document.getElementById('e-link').value.trim();
+    var okName=!!name;
+    var okLink=(link==='')||GMAPS_RE.test(link);
+    document.getElementById('fe-name').classList.toggle('invalid',!okName);
+    document.getElementById('fe-link').classList.toggle('invalid',!okLink);
+    if(!okName||!okLink) return;
+    // Build a diff: only fields that actually changed vs the current record.
+    var changes={};
+    var cur={ name:r.name||'', maps_url:r.link||'', cuisine_type:r.cuisine||'', price_tier:r.price||'', website_url:r.web||'', daily_menu_url:r.menu||'', description:r.desc||'' };
+    var next={ name:name, maps_url:link, cuisine_type:document.getElementById('e-cuisine').value.trim(), price_tier:document.getElementById('e-price').value, website_url:document.getElementById('e-web').value.trim(), daily_menu_url:document.getElementById('e-menu').value.trim(), description:document.getElementById('e-desc').value.trim() };
+    Object.keys(next).forEach(function(k){ if(next[k]!==cur[k]) changes[k]=(next[k]===''?null:next[k]); });
+    var curTags=(r.tags||[]).slice().sort().join('|');
+    var nextTags=Array.from(editState.tags).sort().join('|');
+    if(curTags!==nextTags) changes.tags=Array.from(editState.tags);
+    if(Object.keys(changes).length===0){ alert('Nic jsi nezměnil — uprav prosím aspoň jedno pole.'); return; }
+    var btn=this; btn.disabled=true;
+    try{
+      if(!sb) throw new Error('Databáze není nastavená.');
+      var res=await sb.rpc('submit_edit',{ code:getCode(), p_restaurant_id:editState.id, p_changes:changes, p_note:document.getElementById('e-note').value.trim()||null, p_suggested_by:getName()||null });
+      if(res.error) throw res.error;
+      document.getElementById('editThanksPlace').textContent='„'+r.name+'"';
+      editForm.style.display='none'; editSuccess.style.display='';
+    }catch(e){
+      var rid=editState.id;
+      if(isBadCode(e)){ closeEdit(); relock(function(){ openEdit(rid); }); }
+      else alert('Úpravu se nepodařilo odeslat: '+(e.message||e));
+    }
     finally{ btn.disabled=false; }
   });
 
@@ -896,6 +1249,7 @@
   var WALK='<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="13" cy="4" r="2"/><path d="M13.5 7.5c-.9 0-1.7.5-2.1 1.3L9 13l-2.3-1.2-.9 1.7L9.8 16 8 22h2l1.6-5.2 2 1.9V22h2v-4.6l-2.4-2.3.7-3.1 1.5 1.9c.3.4.7.6 1.2.6H21v-2h-3l-1.9-2.4c-.5-.7-1.3-1.1-2.2-1.1z"/></svg>';
   var MENU='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5h16M4 12h16M4 19h10"/></svg>';
   var GLOBE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg>';
+  var PENCIL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
 
   function buildCards(){
     var cardsEl=document.getElementById('cards'); cardsEl.innerHTML='';
@@ -909,9 +1263,14 @@
         '<button class="heart'+(isFav?' active':'')+'" data-key="'+r.key+'" aria-pressed="'+isFav+'" aria-label="Přidat '+esc(r.name)+' mezi oblíbené">'+HEART+'<span class="cnt">'+(counts[r.id]||0)+'</span></button>'+
         '<div class="rowmain"><div class="rowtop"><span class="linka">'+String(idx+1).padStart(2,'0')+'</span><span class="name">'+esc(r.name)+'</span><span class="tag">'+esc(r.cuisine)+'</span></div>'+
           (r.desc?'<p class="desc">'+esc(r.desc)+'</p>':'')+
-          ((r.menu||r.web)?('<div class="meta">'+
-            (r.menu?('<a class="menu-pill" href="'+esc(r.menu)+'" target="_blank" rel="noopener" aria-label="Denní menu '+esc(r.name)+'">'+MENU+'Denní menu</a>'):'')+
-            (r.web?('<a class="web-pill" href="'+esc(r.web)+'" target="_blank" rel="noopener" aria-label="Web '+esc(r.name)+'">'+GLOBE+'Web</a>'):'')+
+          ((r.menu||r.web||(r.tags&&r.tags.length))?('<div class="meta">'+
+            ((r.menu||r.web)?('<div class="meta-links">'+
+              (r.menu?('<a class="menu-pill" href="'+esc(r.menu)+'" target="_blank" rel="noopener" aria-label="Denní menu '+esc(r.name)+'">'+MENU+'Denní menu</a>'):'')+
+              (r.web?('<a class="web-pill" href="'+esc(r.web)+'" target="_blank" rel="noopener" aria-label="Web '+esc(r.name)+'">'+GLOBE+'Web</a>'):'')+
+            '</div>'):'')+
+            ((r.tags&&r.tags.length)?('<div class="meta-tags'+((r.menu||r.web)?' has-divider':'')+'">'+
+              r.tags.map(function(t){ return '<button type="button" class="tag-pill" data-tag="'+esc(t)+'" aria-label="Filtrovat podle tagu '+esc(t)+'">'+esc(t)+'</button>'; }).join('')+
+            '</div>'):'')+
           '</div>'):'')+
         '</div>'+
         '<div class="stats">'+
@@ -919,12 +1278,21 @@
           '<div class="rating"><span class="num">'+STAR+(r.rating!=null?r.rating.toFixed(1):'–')+'</span><span class="lbl">HODN.</span></div>'+
           '<div class="price">'+esc(r.price)+'</div>'+
           (r.link?('<a class="maplink" href="'+esc(r.link)+'" target="_blank" rel="noopener" aria-label="Otevřít '+esc(r.name)+' na Google Maps">'+PIN+'</a>'):'<span class="maplink" aria-hidden="true" style="opacity:.3">'+PIN+'</span>')+
-        '</div>';
+        '</div>'+
+        '<button type="button" class="editbtn" aria-label="Navrhnout úpravu '+esc(r.name)+'" title="Navrhnout úpravu">'+PENCIL+'</button>';
       cardsEl.appendChild(card);
       card.querySelector('.heart').addEventListener('click',function(){ onHeartClick(r.id); });
+      card.querySelector('.editbtn').addEventListener('click',function(){ requireCode(function(){ openEdit(r.id); }); });
+      card.querySelectorAll('.tag-pill').forEach(function(pill){
+        pill.addEventListener('click',function(){
+          var t=pill.dataset.tag;
+          if(state.tags.has(t)) state.tags.delete(t); else state.tags.add(t);
+          refresh();
+        });
+      });
       card.addEventListener('mouseenter',function(){ highlightMarker(r.id,true); });
       card.addEventListener('mouseleave',function(){ highlightMarker(r.id,false); });
-      card.addEventListener('click',function(e){ if(e.target.closest('a')||e.target.closest('.heart')) return; focusMarker(r.id); });
+      card.addEventListener('click',function(e){ if(e.target.closest('a')||e.target.closest('button')) return; if(selectedId===r.id){ clearSelection(); } else { focusMarker(r.id); } });
     });
   }
 
@@ -943,6 +1311,7 @@
   function initMap(){
     if(map || !document.getElementById('map')) return;
     map=L.map('map',{ scrollWheelZoom:false, zoomControl:true }).setView([CONFIG.OFFICE.lat,CONFIG.OFFICE.lng],15);
+    map.on('click',function(){ clearSelection(); });
     setTiles(currentTheme());
     L.circleMarker([CONFIG.OFFICE.lat,CONFIG.OFFICE.lng],{ radius:9, color:'#ffffff', weight:2, fillColor:AZURE, fillOpacity:1 })
       .addTo(map).bindPopup('<div class="pop-name">Náš office</div><div class="pop-meta">'+esc(CONFIG.OFFICE.label)+'</div>');
@@ -950,14 +1319,25 @@
       if(r.lat==null||r.lng==null) return;
       var m=L.circleMarker([r.lat,r.lng], restStyle(false));
       m.bindPopup('<div class="pop-name">'+esc(r.name)+'</div><div class="pop-meta">'+(r.rating!=null?r.rating.toFixed(1)+'★ · ':'')+(r.walkMin!=null?r.walkMin+' min · ':'')+esc(r.price)+'</div>'+(r.link?'<a href="'+esc(r.link)+'" target="_blank" rel="noopener">Google Maps →</a>':''));
-      m.on('click',function(){ focusCard(r.id); });
+      m.on('click',function(){ if(selectedId===r.id){ clearSelection(); } else { focusCard(r.id); } });
       markers[r.id]=m;
     });
+    // The map sits in a sticky sidebar; its real size can settle after Leaflet's
+    // initial measurement (webfonts, sticky reflow), leaving tiles rendered only
+    // for the old (smaller) size. Re-check on the next frame and on any later
+    // container resize so it always fills the box.
+    requestAnimationFrame(function(){ map.invalidateSize(); });
+    if(window.ResizeObserver){
+      new ResizeObserver(function(){ map.invalidateSize(); }).observe(document.getElementById('map'));
+    } else {
+      window.addEventListener('resize', function(){ map.invalidateSize(); });
+    }
   }
   function highlightMarker(id,on){ var m=markers[id]; if(m) m.setStyle(restStyle(on||id===selectedId)); }
   function focusMarker(id){ var m=markers[id]; if(m && map){ selectedId=id; Object.keys(markers).forEach(function(k){ markers[k].setStyle(restStyle(k===id)); }); m.openPopup(); map.panTo(m.getLatLng()); } markCardSelected(id); }
   function focusCard(id){ selectedId=id; Object.keys(markers).forEach(function(k){ markers[k].setStyle(restStyle(k===id)); }); markCardSelected(id); var card=document.querySelector('.card[data-key="'+id+'"]'); if(card){ card.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'center'}); } }
   function markCardSelected(id){ document.querySelectorAll('.card.selected').forEach(function(c){ c.classList.remove('selected'); }); var card=document.querySelector('.card[data-key="'+id+'"]'); if(card) card.classList.add('selected'); }
+  function clearSelection(){ selectedId=null; Object.keys(markers).forEach(function(k){ markers[k].setStyle(restStyle(false)); }); document.querySelectorAll('.card.selected').forEach(function(c){ c.classList.remove('selected'); }); if(map) map.closePopup(); }
 
   // ======================================================================
   //  Filtering + render
@@ -969,11 +1349,16 @@
     if(parseFloat(card.dataset.rating)<state.minRating) return false;
     if(state.maxWalk && parseFloat(card.dataset.walk)>state.maxWalk) return false;
     if(state.onlyFav && !myFavs[card.dataset.key]) return false;
-    if(state.search){ var r=DATA.find(function(d){ return d.key===card.dataset.key; }); if(!r) return false; if((r.name+' '+r.desc+' '+r.cuisine).toLowerCase().indexOf(state.search)===-1) return false; }
+    if(state.tags.size || state.search){
+      var r=DATA.find(function(d){ return d.key===card.dataset.key; });
+      if(!r) return false;
+      if(state.tags.size && !Array.from(state.tags).some(function(t){ return (r.tags||[]).indexOf(t)!==-1; })) return false;
+      if(state.search && (r.name+' '+r.desc+' '+r.cuisine).toLowerCase().indexOf(state.search)===-1) return false;
+    }
     return true;
   }
   function refresh(){
-    renderCatChips(); renderPriceChips(); renderRatingChips(); renderWalkChips();
+    renderCatChips(); renderTagChips(); renderPriceChips(); renderRatingChips(); renderWalkChips();
     document.getElementById('favChip').classList.toggle('active',state.onlyFav);
     applySort();
     var cards=document.getElementById('cards').querySelectorAll('.card'), visible=0, mapVisible=0;

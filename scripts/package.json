@@ -5,8 +5,14 @@
   "type": "module",
   "description": "One-time data scripts for the Kam vyrazit na oběd? guide (import from Excel + geocode via Nominatim).",
   "scripts": {
-    "import": "node import-restaurants.mjs",
-    "geocode": "node geocode-restaurants.mjs"
+    "import": "node --env-file=.env import-restaurants.mjs",
+    "geocode": "node --env-file=.env geocode-restaurants.mjs",
+    "suggestions:list": "node --env-file=.env manage-suggestions.mjs list",
+    "suggestions:approve": "node --env-file=.env manage-suggestions.mjs approve",
+    "suggestions:reject": "node --env-file=.env manage-suggestions.mjs reject",
+    "edits:list": "node --env-file=.env manage-edits.mjs list",
+    "edits:approve": "node --env-file=.env manage-edits.mjs approve",
+    "edits:reject": "node --env-file=.env manage-edits.mjs reject"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

@@ -155,6 +155,18 @@
 
   /* ---------------- Controls ---------------- */
   .controls{ margin-top:10px; display:flex; flex-direction:column; gap:9px; }
+  .filterbody{ display:flex; flex-direction:column; gap:9px; }
+  .filtertoggle{
+    display:none; align-items:center; gap:9px; cursor:pointer; width:100%;
+    background:var(--surface); border:1px solid var(--rule); color:var(--ink);
+    padding:10px 14px; border-radius:11px; font-family:var(--font-display); font-weight:600; font-size:13.5px;
+    transition:border-color .14s;
+  }
+  .filtertoggle:hover{ border-color:var(--lime-deep); }
+  .filtertoggle svg{ width:16px; height:16px; flex:none; }
+  .filtertoggle .ft-chev{ margin-left:auto; transition:transform .2s; }
+  .filtertoggle[aria-expanded="true"] .ft-chev{ transform:rotate(180deg); }
+  .filtertoggle .fcount{ background:var(--lime); color:var(--on-lime); font-size:11px; font-weight:700; border-radius:999px; padding:1px 8px; }
   .searchrow{ display:flex; gap:11px; flex-wrap:wrap; align-items:center; }
   .search-wrap{ flex:1 1 260px; position:relative; display:flex; align-items:center; }
   .search-wrap svg{ position:absolute; left:14px; width:16px; height:16px; color:var(--ink-faint); pointer-events:none; }
@@ -225,6 +237,18 @@
   @media (max-width:920px){
     .hall{ grid-template-columns:1fr; }
     .mappanel{ order:-1; position:static !important; max-height:none !important; }
+  }
+  /* Mobile: drop the map, collapse filters behind a toggle, let the header scroll away */
+  @media (max-width:720px){
+    .mappanel{ display:none !important; }
+    .hall{ padding-top:14px; }
+    .deck{ position:static; }
+    .filtertoggle{ display:flex; }
+    .filterbody{ display:none; }
+    .filterbody.open{ display:flex; }
+    .subtitle{ display:none; }
+    .sortnote{ display:none; }
+    .titlerow{ margin-top:6px; }
   }
 
   /* schedule header */
@@ -510,29 +534,38 @@
           </div>
         </div>
 
-        <div class="filterline">
-          <span class="chiplabel">Kuchyně</span>
-          <div class="chiprow catchips" id="catChips" aria-label="Filtr podle kuchyně"></div>
-        </div>
+        <button type="button" class="filtertoggle" id="filterToggle" aria-expanded="false" aria-controls="filterBody">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h18M6 12h12M10 19h4"/></svg>
+          <span class="ft-label">Filtry</span>
+          <span class="fcount" id="filterCount" hidden></span>
+          <svg class="ft-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
 
-        <div class="filterline" id="tagFilterline" style="display:none;">
-          <span class="chiplabel">Tagy</span>
-          <div class="chiprow" id="tagChips" aria-label="Filtr podle tagů"></div>
-        </div>
+        <div class="filterbody" id="filterBody">
+          <div class="filterline">
+            <span class="chiplabel">Kuchyně</span>
+            <div class="chiprow catchips" id="catChips" aria-label="Filtr podle kuchyně"></div>
+          </div>
 
-        <div class="chiprow">
-          <span class="chiplabel">Cena</span>
-          <div class="chiprow" id="priceChips"></div>
-          <span class="chiplabel">Hodnocení</span>
-          <div class="chiprow" id="ratingChips"></div>
-          <span class="chiplabel">Pěšky</span>
-          <div class="chiprow" id="walkChips"></div>
-          <button class="chip fav" id="favChip" type="button">♥ Jen oblíbené</button>
-          <button class="chip reset" id="resetChip" type="button">↺ Reset</button>
+          <div class="filterline" id="tagFilterline" style="display:none;">
+            <span class="chiplabel">Tagy</span>
+            <div class="chiprow" id="tagChips" aria-label="Filtr podle tagů"></div>
+          </div>
+
+          <div class="chiprow">
+            <span class="chiplabel">Cena</span>
+            <div class="chiprow" id="priceChips"></div>
+            <span class="chiplabel">Hodnocení</span>
+            <div class="chiprow" id="ratingChips"></div>
+            <span class="chiplabel">Pěšky</span>
+            <div class="chiprow" id="walkChips"></div>
+            <button class="chip fav" id="favChip" type="button">♥ Jen oblíbené</button>
+            <button class="chip reset" id="resetChip" type="button">↺ Reset</button>
+          </div>
         </div>
 
         <div class="statrow">
-          <p class="statline">Zobrazeno <b id="visibleCount">–</b> z <b id="totalCountStat">–</b> podniků · řazeno podle <b id="sortLabel">hodnocení ↓</b></p>
+          <p class="statline">Zobrazeno <b id="visibleCount">–</b> z <b id="totalCountStat">–</b> podniků<span class="sortnote"> · řazeno podle <b id="sortLabel">hodnocení ↓</b></span></p>
           <div class="sortmobile">
             <label for="sortSel">Řadit</label>
             <select class="sortselect" id="sortSel" aria-label="Řazení seznamu">
@@ -969,6 +1002,21 @@
   document.getElementById('resetChip').addEventListener('click',function(){ state={ search:'', cats:new Set(), catsExpanded:false, tags:new Set(), prices:new Set(), minRating:0, maxWalk:0, onlyFav:false, sortKey:state.sortKey, sortDir:state.sortDir }; document.getElementById('search').value=''; refresh(); });
   document.getElementById('search').addEventListener('input',function(){ state.search=this.value.trim().toLowerCase(); refresh(); });
 
+  // ---------- filter toggle (mobile) ----------
+  var filterToggleEl=document.getElementById('filterToggle'), filterBodyEl=document.getElementById('filterBody'), filterCountEl=document.getElementById('filterCount');
+  function activeFilterCount(){
+    return state.cats.size + state.tags.size + state.prices.size + (state.minRating>0?1:0) + (state.maxWalk>0?1:0) + (state.onlyFav?1:0);
+  }
+  function updateFilterCount(){
+    var n=activeFilterCount();
+    if(n>0){ filterCountEl.textContent=n; filterCountEl.hidden=false; }
+    else{ filterCountEl.hidden=true; }
+  }
+  filterToggleEl.addEventListener('click',function(){
+    var open=filterBodyEl.classList.toggle('open');
+    filterToggleEl.setAttribute('aria-expanded', open?'true':'false');
+  });
+
   // ---------- sort ----------
   function setSort(k,d){ state.sortKey=k; state.sortDir=d; refresh(); }
   document.getElementById('schedHead').addEventListener('click',function(e){ var b=e.target.closest('.ar'); if(!b) return; setSort(b.getAttribute('data-key'), b.getAttribute('data-dir')); });
@@ -1371,6 +1419,7 @@
     if(mapCountEl) mapCountEl.textContent=mapVisible+' na mapě';
     var tc=document.getElementById('totalCount'); if(tc) tc.textContent=DATA.length;
     var tcs=document.getElementById('totalCountStat'); if(tcs) tcs.textContent=DATA.length;
+    updateFilterCount();
   }
 
   // ---------- go ----------

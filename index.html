@@ -932,11 +932,39 @@
   var PRICES=['€','€€','€€€','€€€€'];
   var RATING_TIERS=[{label:'Vše',min:0},{label:'4.0+',min:4.0},{label:'4.5+',min:4.5}];
 
+  // ---------- faceted chip counts ----------
+  // Mirrors matches(card) but operates on a DATA record and can skip ONE
+  // dimension's own filter — so a chip's count reflects every OTHER active
+  // filter without zeroing itself out (e.g. picking one Kuchyně chip shouldn't
+  // make every other Kuchyně chip show 0).
+  function recordPassesExcept(r, excludeDim){
+    if(excludeDim!=='cats' && state.cats.size && !state.cats.has(r.category)) return false;
+    if(excludeDim!=='prices' && state.prices.size && !state.prices.has(r.price)) return false;
+    if(excludeDim!=='rating' && (r.rating||0)<state.minRating) return false;
+    if(excludeDim!=='walk' && state.maxWalk && (r.walkMin==null?9999:r.walkMin)>state.maxWalk) return false;
+    if(excludeDim!=='fav' && state.onlyFav && !myFavs[r.id]) return false;
+    if(excludeDim!=='tags' && state.tags.size && !Array.from(state.tags).every(function(t){ return (r.tags||[]).indexOf(t)!==-1; })) return false;
+    if(state.search && (r.name+' '+r.desc+' '+r.cuisine).toLowerCase().indexOf(state.search)===-1) return false;
+    return true;
+  }
+  function catFacetCount(name){
+    return DATA.filter(function(r){ return recordPassesExcept(r,'cats') && r.category===name; }).length;
+  }
+  // Tags filter as AND: a chip's count is "how many would remain if this tag
+  // were ALSO required", on top of whatever tags are already selected.
+  function tagFacetCount(name){
+    var need=new Set(state.tags); need.add(name);
+    return DATA.filter(function(r){
+      if(!recordPassesExcept(r,'tags')) return false;
+      return Array.from(need).every(function(t){ return (r.tags||[]).indexOf(t)!==-1; });
+    }).length;
+  }
+
   // ---------- chips ----------
   var catChipsEl=document.getElementById('catChips');
   function mkChip(label,active,onClick){ var b=document.createElement('button'); b.type='button'; b.className='chip'+(active?' active':''); b.textContent=label; b.addEventListener('click',onClick); return b; }
   function mkCatChip(c){
-    return mkChip(c.name+' ('+c.count+')', state.cats.has(c.name), function(){
+    return mkChip(c.name+' ('+catFacetCount(c.name)+')', state.cats.has(c.name), function(){
       if(state.cats.has(c.name)) state.cats.delete(c.name); else state.cats.add(c.name); refresh();
     });
   }
@@ -986,7 +1014,7 @@
     tagChipsEl.innerHTML='';
     tagFilterlineEl.style.display = TAGS.length ? '' : 'none';
     TAGS.forEach(function(t){
-      tagChipsEl.appendChild(mkChip(t.name+' ('+t.count+')', state.tags.has(t.name), function(){
+      tagChipsEl.appendChild(mkChip(t.name+' ('+tagFacetCount(t.name)+')', state.tags.has(t.name), function(){
         if(state.tags.has(t.name)) state.tags.delete(t.name); else state.tags.add(t.name); refresh();
       }));
     });

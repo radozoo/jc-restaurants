@@ -81,6 +81,7 @@ const records = rows
     if (!name) return null;
     const cuisine = pick(row, ['Typ kuchyně', 'Typ kuchyne', 'Cuisine']);
     const ratingRaw = pick(row, ['Rating', 'Hodnocení']);
+    const tagsRaw = pick(row, ['Tagy', 'Tags']);
     return {
       name,
       rating: ratingRaw != null ? Number(String(ratingRaw).replace(',', '.')) : null,
@@ -91,6 +92,7 @@ const records = rows
       website_url: pick(row, ['Web', 'Webstránka', 'Website', 'Web restaurace']),
       daily_menu_url: pick(row, ['Denní menu', 'Denni menu', 'Menu', 'Daily menu']),
       description: pick(row, ['Popis', 'Description']),
+      tags: tagsRaw ? tagsRaw.split(',').map((t) => t.trim()).filter(Boolean) : [],
     };
   })
   .filter(Boolean);

@@ -32,7 +32,15 @@ Nahrazuje starý Tableau dashboard. Funkce: hledání, filtry (kuchyně / cena /
 
 ### 2. Vytvoř tabulky + RLS
 V Supabase: **SQL Editor → New query** → vlož obsah [`supabase/schema.sql`](supabase/schema.sql) → **Run**.
-Tím vzniknou tabulky `restaurants`, `favorites`, `suggestions` a bezpečnostní politiky.
+Tím vzniknou tabulky `restaurants`, `favorites`, `suggestions`, `restaurant_edits`,
+`app_config` a bezpečnostní politiky. Soubor je idempotentní — dá se spustit znovu při každé
+změně schématu.
+
+**Nastav týmové heslo** (chrání navrhování + úpravy — viz [Týmové heslo](#týmové-heslo)):
+```sql
+update public.app_config set value = 'vaše-tajné-heslo' where key = 'submit_code';
+```
+Bez tohohle kroku zůstane heslo `CHANGE-ME`.
 
 ### 3. Nahraj data z Excelu + geokóduj
 Excel [`Karel_Vaclavak_Prague_Restaurants_Guide.xlsx`](Karel_Vaclavak_Prague_Restaurants_Guide.xlsx)
@@ -43,12 +51,18 @@ cd scripts
 cp .env.example .env          # vyplň SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY
 npm install
 npm run import                # nahraje restaurace do Supabase (idempotentní)
-npm run geocode               # doplní souřadnice pro mapu (přes OpenStreetMap Nominatim)
+npm run geocode                # doplní souřadnice pro mapu (přes OpenStreetMap Nominatim)
 ```
 
 > `npm run import` lze pouštět opakovaně — aktualizuje podle názvu a nesmaže oblíbená.
 > `npm run geocode` doplní jen chybějící souřadnice; pár nepřesností dolaď ručně v Table Editoru
-> (sloupce `lat` / `lng`).
+> (sloupce `lat` / `lng`) — u restaurací s víc pobočkami hledání podle jména občas trefí jinou
+> pobočku, tak zkontroluj, že souřadnice sedí.
+>
+> Appka počítá pěší čas ze vzdušné čáry (`index.html` → `haversineMin`), vynásobené koeficientem
+> obchádzky `DETOUR_FACTOR` (aktuálně 1.6), protože v klikatých uličkách Nového Města je vzdušná
+> čára systematicky kratší než reálná trasa. Pokud ti čísla u některých restaurací budou sedět
+> špatně, uprav `DETOUR_FACTOR` přímo v `index.html`.
 
 ### 4. Napoj frontend
 Otevři [`index.html`](index.html), najdi blok `CONFIG` (hned nahoře ve `<script>`) a vyplň:
@@ -84,9 +98,65 @@ python3 -m http.server 8000
 | Úloha | Kde |
 |------|-----|
 | Přidat / upravit restauraci | Supabase → **Table Editor → restaurants** (vyplň i `category` pro filtr) |
-| Schválit návrh kolegy | Supabase → **Table Editor → suggestions** → zkopíruj dobrý řádek do `restaurants`, nastav `status = approved` |
+| Schválit návrh kolegy | `npm run suggestions:list` → obohatit → `npm run suggestions:approve` (viz [`docs/APPROVAL.md`](docs/APPROVAL.md)) |
 | Doplnit souřadnice nové restaurace | znovu `npm run geocode`, nebo ručně `lat`/`lng` v Table Editoru |
 | Změnit vzhled / texty | uprav `index.html` a pushni |
+
+### Návrhy nových podniků
+
+Kolegové posílají tipy tlačítkem **„Navrhnout podnik"**. Povinný je jen **název** a
+**odkaz na Google Maps** (formulář ověří, že jde o mapový odkaz); typ kuchyně, tagy, web,
+denní menu a popis jsou nepovinné a **doplní se při schválení**.
+
+Schvalování běží lokálně ze `scripts/` — chybějící atributy doplní Claude webovým
+výzkumem, skript pak návrh promění v ostrou restauraci:
+
+```bash
+cd scripts
+npm run suggestions:list              # co čeká na schválení
+npm run suggestions:list -- --json    # export → obohacení (řekni Claudovi „schvál návrhy")
+npm run suggestions:approve -- suggestions-enriched.json
+npm run suggestions:reject -- <id>    # zamítnutí
+```
+
+Celý postup a kritéria tagů: [`docs/APPROVAL.md`](docs/APPROVAL.md).
+
+### Návrhy úprav existujících restaurací
+
+Kolegové můžou navrhnout opravu **libovolného pole** existující restaurace — na kartě přes
+tužku vpravo nahoře (objeví se při najetí myší / po kliknutí na kartu). Odešlou se jen
+změněná pole (ukládají se do `restaurant_edits`). Schvalování:
+
+```bash
+cd scripts
+npm run edits:list                # diff: současná → navrhovaná hodnota
+npm run edits:list -- --json      # export → edits-pending.json
+npm run edits:approve -- edits-pending.json
+npm run edits:reject -- <id>
+```
+
+Schválení aplikuje změny **UPDATEem podle `id`** (úprava názvu je bezpečná — srdíčka
+přežijí), a přepočítá `category` (při změně kuchyně) i souřadnice (při změně Maps odkazu).
+Detaily: [`docs/APPROVAL.md`](docs/APPROVAL.md).
+
+### Týmové heslo
+
+Navrhovat nové podniky i upravovat existující smí jen ten, kdo zná **týmové heslo**. Kolega
+ho zadá jednou (uloží se mu v prohlížeči), pak má oba formuláře odemčené.
+
+Ochrana je **vynucená v databázi**, ne jen v prohlížeči: tabulky `suggestions` a
+`restaurant_edits` nemají žádnou insert politiku, takže jediná cesta, jak do nich zapsat, je
+přes `SECURITY DEFINER` funkce `submit_suggestion` / `submit_edit`, které nejdřív ověří heslo.
+Anon klíčem ani přes dev tools to nejde obejít. Heslo je v tabulce `app_config` (bez RLS
+politiky → z klientu nečitelné).
+
+- **Nastavit / změnit heslo:** `update public.app_config set value = 'nové-heslo' where key = 'submit_code';`
+- **Rozdej ho kolegům** (Slack, nástěnka). Když unikne, změň ho jedním UPDATEem — každý ho pak zadá znovu.
+
+> **Pozor:** schválené restaurace žijí **jen v Supabase**, ne ve zdrojovém Excelu.
+> `npm run import` je nesmaže (upsert dle jména jen aktualizuje shody), ale v Excelu
+> nebudou. Souřadnice u návrhů se berou z mapového pinu, takže `npm run geocode` je pro
+> ně netřeba.
 
 ### Pole `category` vs `cuisine_type`
 - `cuisine_type` = volný, detailní popis (zobrazuje se na kartě, např. „Japanese / Ramen").
@@ -103,9 +173,11 @@ supabase/schema.sql             # tabulky + RLS (spusť jednou v SQL Editoru)
 scripts/
   import-restaurants.mjs        # Excel → Supabase (npm run import)
   geocode-restaurants.mjs       # souřadnice přes Nominatim (npm run geocode)
+  manage-suggestions.mjs        # návrhy nových → restaurants (npm run suggestions:*)
+  manage-edits.mjs              # návrhy úprav → restaurants (npm run edits:*)
   .env.example                  # šablona pro SUPABASE_URL + service_role klíč
 Karel_Vaclavak_Prague_Restaurants_Guide.xlsx   # zdroj dat
-docs/                           # brainstorm + plán
+docs/                           # brainstorm, plán, APPROVAL.md (schvalování návrhů)
 ```
 
 ## Bezpečnost — na co si dát pozor

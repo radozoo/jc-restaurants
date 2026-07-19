@@ -153,6 +153,25 @@ politiky → z klientu nečitelné).
 - **Nastavit / změnit heslo:** `update public.app_config set value = 'nové-heslo' where key = 'submit_code';`
 - **Rozdej ho kolegům** (Slack, nástěnka). Když unikne, změň ho jedním UPDATEem — každý ho pak zadá znovu.
 
+### Upozornění na nové návrhy (Slack)
+
+Když někdo pošle návrh nebo úpravu, přistane v Supabase jako `pending` a **čeká na tebe** —
+nic se nestane samo. Aby ti to nemuselo nic připomínat, dá se zapnout Slack zpráva při každém
+novém návrhu (přes `pg_net`, viz `supabase/schema.sql`). Webhook URL je tajná, takže je v
+`app_config` (ne v repu); dokud ji nenastavíš, trigger mlčí. Zapnutí:
+
+1. Vytvoř Slack **Incoming Webhook**: <https://api.slack.com/messaging/webhooks>
+2. Ulož URL:
+   ```sql
+   update public.app_config set value = 'https://hooks.slack.com/services/…' where key = 'slack_webhook_url';
+   ```
+3. Ujisti se, že máš spuštěné aktuální `supabase/schema.sql` (vytvoří `pg_net`, trigger a funkci).
+
+Pak přijde do kanálu zpráva „🍽️ Nový návrh podniku: …" / „✏️ Návrh úpravy: …" hned po odeslání.
+
+**Bez Slacku** návrhy kdykoli zkontroluješ ručně: `npm run suggestions:list` / `npm run edits:list`,
+nebo v Supabase → Table Editor (filtr `status = pending`).
+
 > **Pozor:** schválené restaurace žijí **jen v Supabase**, ne ve zdrojovém Excelu.
 > `npm run import` je nesmaže (upsert dle jména jen aktualizuje shody), ale v Excelu
 > nebudou. Souřadnice u návrhů se berou z mapového pinu, takže `npm run geocode` je pro

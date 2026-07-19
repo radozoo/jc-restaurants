@@ -209,3 +209,65 @@ $$;
 grant execute on function public.check_submit_code(text)                         to anon, authenticated;
 grant execute on function public.submit_suggestion(text, jsonb)                  to anon, authenticated;
 grant execute on function public.submit_edit(text, uuid, jsonb, text, text)      to anon, authenticated;
+
+-- ---------- Slack notifications on new submissions --------------------------
+-- Fire a Slack message whenever a suggestion or an edit is inserted, so you know
+-- something is waiting without polling. Uses pg_net (async HTTP from Postgres).
+-- The Slack Incoming Webhook URL is a secret, so it lives in app_config (never in
+-- this repo). Until you set it, the trigger is inert (does nothing). To enable:
+--   1. Create a Slack Incoming Webhook: https://api.slack.com/messaging/webhooks
+--   2. update public.app_config set value = 'https://hooks.slack.com/services/…'
+--        where key = 'slack_webhook_url';
+create extension if not exists pg_net;
+
+insert into public.app_config (key, value) values ('slack_webhook_url', '')
+  on conflict (key) do nothing;
+
+create or replace function public.notify_submission()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  hook text;
+  msg  text;
+  rname text;
+  nfields int;
+begin
+  select value into hook from app_config where key = 'slack_webhook_url';
+  if hook is null or hook = '' then
+    return new;                       -- not configured → stay silent
+  end if;
+
+  if tg_table_name = 'suggestions' then
+    msg := '🍽️ Nový návrh podniku: *' || coalesce(new.name, '(bez názvu)') || '*'
+           || coalesce(' — od ' || new.suggested_by, '')
+           || E'\nKe schválení:  npm run suggestions:list';
+  else
+    select name into rname from restaurants where id = new.restaurant_id;
+    select count(*) into nfields from jsonb_object_keys(new.changes);
+    msg := '✏️ Návrh úpravy: *' || coalesce(rname, '(neznámá restaurace)') || '*'
+           || ' (' || nfields || ' polí)'
+           || coalesce(' — od ' || new.suggested_by, '')
+           || E'\nKe schválení:  npm run edits:list';
+  end if;
+
+  perform net.http_post(
+    url     := hook,
+    body    := jsonb_build_object('text', msg),
+    headers := jsonb_build_object('Content-Type', 'application/json')
+  );
+  return new;
+end;
+$$;
+
+drop trigger if exists notify_suggestion on public.suggestions;
+create trigger notify_suggestion
+  after insert on public.suggestions
+  for each row execute function public.notify_submission();
+
+drop trigger if exists notify_edit on public.restaurant_edits;
+create trigger notify_edit
+  after insert on public.restaurant_edits
+  for each row execute function public.notify_submission();

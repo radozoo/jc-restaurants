@@ -1399,7 +1399,7 @@
     if(state.tags.size || state.search){
       var r=DATA.find(function(d){ return d.key===card.dataset.key; });
       if(!r) return false;
-      if(state.tags.size && !Array.from(state.tags).some(function(t){ return (r.tags||[]).indexOf(t)!==-1; })) return false;
+      if(state.tags.size && !Array.from(state.tags).every(function(t){ return (r.tags||[]).indexOf(t)!==-1; })) return false;
       if(state.search && (r.name+' '+r.desc+' '+r.cuisine).toLowerCase().indexOf(state.search)===-1) return false;
     }
     return true;

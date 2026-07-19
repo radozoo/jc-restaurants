@@ -90,7 +90,7 @@
     backdrop-filter:saturate(1.4) blur(10px);
     border-bottom:1px solid var(--rule);
   }
-  .deck-inner{ padding:14px clamp(16px,4vw,44px) 12px; }
+  .deck-inner{ padding:12px clamp(16px,4vw,44px) 11px; }
 
   .brandrow{ display:flex; align-items:center; justify-content:space-between; gap:16px; }
   .brand{ display:flex; align-items:center; gap:10px; }
@@ -125,8 +125,9 @@
   .suggestbtn svg{ width:14px; height:14px; }
   @media (max-width:560px){ .suggestbtn .lbl{ display:none; } .suggestbtn{ padding:0 12px; } }
 
+  .titlerow{ display:flex; align-items:baseline; justify-content:space-between; gap:4px 22px; flex-wrap:wrap; margin-top:9px; }
   .title{
-    margin:10px 0 0; font-family:var(--font-display); font-weight:700;
+    margin:0; font-family:var(--font-display); font-weight:700;
     font-size:clamp(19px,2.4vw,25px); line-height:1.1; letter-spacing:-.01em;
     color:var(--ink); text-wrap:balance; display:flex; flex-wrap:wrap;
   }
@@ -144,7 +145,7 @@
   @keyframes sweep{ from{ width:0; } to{ width:110px; } }
 
   .subtitle{
-    margin:8px 0 0; font-size:12.5px; color:var(--ink-soft);
+    margin:0; font-size:12.5px; color:var(--ink-soft);
     display:flex; align-items:center; flex-wrap:wrap; gap:8px;
   }
   .pin{ color:var(--lime-deep); display:inline-flex; }
@@ -153,7 +154,7 @@
   .dot-sep{ color:var(--ink-faint); }
 
   /* ---------------- Controls ---------------- */
-  .controls{ margin-top:12px; display:flex; flex-direction:column; gap:9px; }
+  .controls{ margin-top:10px; display:flex; flex-direction:column; gap:9px; }
   .searchrow{ display:flex; gap:11px; flex-wrap:wrap; align-items:center; }
   .search-wrap{ flex:1 1 260px; position:relative; display:flex; align-items:center; }
   .search-wrap svg{ position:absolute; left:14px; width:16px; height:16px; color:var(--ink-faint); pointer-events:none; }
@@ -487,14 +488,14 @@
         </div>
       </div>
 
-      <h1 class="title" id="titleRow" aria-label="Kam vyrazit na oběd?"></h1>
-      <div class="underline" aria-hidden="true"></div>
-
-      <p class="subtitle">
-        <span class="pin" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></span>
-        <b>Olivova 4</b>, Nové Město &nbsp;·&nbsp; Praha
-        <span class="dot-sep">·</span> <b id="totalCount">53</b> podniků na dosah oběda
-      </p>
+      <div class="titlerow">
+        <h1 class="title" id="titleRow" aria-label="Kam vyrazit na oběd?"></h1>
+        <p class="subtitle">
+          <span class="pin" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></span>
+          <b>Olivova 4</b>, Nové Město &nbsp;·&nbsp; Praha
+          <span class="dot-sep">·</span> <b id="totalCount">53</b> podniků na dosah oběda
+        </p>
+      </div>
 
       <div class="controls">
         <div class="searchrow">

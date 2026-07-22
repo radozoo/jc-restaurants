@@ -54,6 +54,7 @@ const CATEGORY_RULES = [
   [/Wine bar/i,             'Wine bar'],
   [/Tapas|Spanish/i,        'Španělská'],
   [/Middle Eastern/i,       'Blízkovýchodní'],
+  [/Turkish/i,              'Turecká'],
   [/Brazilian|Churrascaria/i, 'Brazilská'],
   [/Cocktail/i,             'Mezinárodní'],
   [/Czech|Česk/i,           'Česká'],
